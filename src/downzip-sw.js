@@ -83,12 +83,13 @@ self.addEventListener('fetch', async (event) => {
             // Append all the downloaded data
             try {
                 await new Promise((resolve, reject) => {
-                    fetch(file.downloadUrl).then(response => {
+                    fetch(file.downloadUrl).then(async response => {
                         if (!response.ok) {
                             Utils.error(`downloadUrl: ${file.downloadUrl}, response status: ${response.status}`)
                             return resolve()
                         }
-                        return response.body.then(async (stream) => {
+                        try {
+                            const stream = response.body
                             const reader = stream.getReader()
                             let doneReading = false
                             while (!doneReading) {
@@ -104,9 +105,10 @@ self.addEventListener('fetch', async (event) => {
                                     zipMap[id].zip.appendData(value)
                                 }
                             }
-                        }).catch((err) => {
+
+                        } catch (err) {
                             reject(err)
-                        })
+                        }
                     })
                 })
             } catch (e) {
