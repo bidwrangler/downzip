@@ -83,24 +83,30 @@ self.addEventListener('fetch', async (event) => {
             // Append all the downloaded data
             try {
                 await new Promise((resolve, reject) => {
-                    fetch(file.downloadUrl).then(response => response.body).then(async (stream) => {
-                        const reader = stream.getReader()
-                        let doneReading = false
-                        while (!doneReading) {
-                            const chunk = await reader.read()
-                            const {done, value} = chunk
-
-                            if (done) {
-                                // If this stream has finished, resolve and return
-                                resolve()
-                                doneReading = true
-                            } else {
-                                // If not, append data to the zip
-                                zipMap[id].zip.appendData(value)
-                            }
+                    fetch(file.downloadUrl).then(response => {
+                        if (!response.ok) {
+                            Utils.error(`downloadUrl: ${file.downloadUrl}, response status: ${response.status}`)
+                            return
                         }
-                    }).catch((err) => {
-                        reject(err)
+                        return response.body.then(async (stream) => {
+                            const reader = stream.getReader()
+                            let doneReading = false
+                            while (!doneReading) {
+                                const chunk = await reader.read()
+                                const {done, value} = chunk
+
+                                if (done) {
+                                    // If this stream has finished, resolve and return
+                                    resolve()
+                                    doneReading = true
+                                } else {
+                                    // If not, append data to the zip
+                                    zipMap[id].zip.appendData(value)
+                                }
+                            }
+                        }).catch((err) => {
+                            reject(err)
+                        })
                     })
                 })
             } catch (e) {
