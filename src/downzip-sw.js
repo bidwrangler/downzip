@@ -86,7 +86,7 @@ self.addEventListener('fetch', async (event) => {
                     fetch(file.downloadUrl).then(response => {
                         if (!response.ok) {
                             Utils.error(`downloadUrl: ${file.downloadUrl}, response status: ${response.status}`)
-                            return
+                            return resolve()
                         }
                         return response.body.then(async (stream) => {
                             const reader = stream.getReader()
