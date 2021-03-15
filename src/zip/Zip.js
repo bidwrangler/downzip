@@ -136,6 +136,16 @@ class Zip {
         }
     }
 
+    removeFile = (fileName) => {
+        try {
+            const file = this.fileRecord[this.fileRecord.length - 1]
+            Utils.log(`Remove file: ${file.name}`)
+            this.fileRecord = this.fileRecord.filter(record => record.name !== fileName)
+        } catch (e) {
+            Utils.error(e)
+        }
+    }
+
     finish = () => {
         if(!this.isWritingFile() && !this.finished){
             Utils.log(`Finishing zip`)

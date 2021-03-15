@@ -85,6 +85,7 @@ self.addEventListener('fetch', async (event) => {
                 await new Promise((resolve, reject) => {
                     fetch(file.downloadUrl).then(async response => {
                         if (!response.ok) {
+                            zipMap[id].zip.removeFile(file.name)
                             Utils.error(`downloadUrl: ${file.downloadUrl}, response status: ${response.status}`)
                             return resolve()
                         }
