@@ -84,7 +84,7 @@ self.addEventListener('fetch', async (event) => {
             try {
                 await new Promise((resolve, reject) => {
                     try {
-                        fetch(file.downloadUrl).then(async response => {
+                        fetch(file.downloadUrl, {mode: 'no-cors'}).then(async response => {
                             if (!response.ok) {
                                 zipMap[id].zip.removeFile(file.name)
                                 Utils.error(`downloadUrl: ${file.downloadUrl}, response status: ${response.status}`)
