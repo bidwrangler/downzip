@@ -105,7 +105,7 @@ self.addEventListener('fetch', async (event) => {
                                 zipMap[id].zip.appendData(value)
                             }
                         }
-                    })
+                    }).catch(err => reject(err))
                 })
             } catch (e) {
                 Utils.error(`Error while piping data into zip: ${e.toString()}`)
