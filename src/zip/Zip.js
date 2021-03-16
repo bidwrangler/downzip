@@ -137,13 +137,9 @@ class Zip {
     }
 
     removeFile = (fileName) => {
-        try {
-            Utils.log(`Remove file: ${fileName}`)
-            const fileIndex = this.fileRecord.findIndex(record => record.name === fileName)
-            if (fileIndex !== -1) this.fileRecord.splice(fileIndex, 1)
-        } catch (e) {
-            Utils.error(e)
-        }
+        Utils.log(`Remove file: ${fileName}`)
+        const fileIndex = this.fileRecord.findIndex(record => record.name === fileName)
+        if (fileIndex !== -1) this.fileRecord.splice(fileIndex, 1)
     }
 
     finish = () => {
