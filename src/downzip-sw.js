@@ -83,33 +83,29 @@ self.addEventListener('fetch', async (event) => {
             // Append all the downloaded data
             try {
                 await new Promise((resolve, reject) => {
-                    try {
-                        fetch(file.downloadUrl, {mode: 'no-cors'}).then(async response => {
-                            if (!response.ok) {
-                                zipMap[id].zip.removeFile(file.name)
-                                Utils.error(`downloadUrl: ${file.downloadUrl}, response status: ${response.status}`)
-                                return resolve()
-                            } 
-                            const stream = response.body
-                            const reader = stream.getReader()
-                            let doneReading = false
-                            while (!doneReading) {
-                                const chunk = await reader.read()
-                                const {done, value} = chunk
+                    fetch(file.downloadUrl).then(async response => {
+                        if (!response.ok) {
+                            zipMap[id].zip.removeFile(file.name)
+                            Utils.error(`downloadUrl: ${file.downloadUrl}, response status: ${response.status}`)
+                            return resolve()
+                        } 
+                        const stream = response.body
+                        const reader = stream.getReader()
+                        let doneReading = false
+                        while (!doneReading) {
+                            const chunk = await reader.read()
+                            const {done, value} = chunk
 
-                                if (done) {
-                                    // If this stream has finished, resolve and return
-                                    resolve()
-                                    doneReading = true
-                                } else {
-                                    // If not, append data to the zip
-                                    zipMap[id].zip.appendData(value)
-                                }
+                            if (done) {
+                                // If this stream has finished, resolve and return
+                                resolve()
+                                doneReading = true
+                            } else {
+                                // If not, append data to the zip
+                                zipMap[id].zip.appendData(value)
                             }
-                        }).catch(err => reject(err))
-                    } catch (err) {
-                        reject(err)
-                    }
+                        }
+                    })
                 })
             } catch (e) {
                 Utils.error(`Error while piping data into zip: ${e.toString()}`)
