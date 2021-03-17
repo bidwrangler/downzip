@@ -86,7 +86,7 @@ self.addEventListener('fetch', async (event) => {
                     fetch(file.downloadUrl).then(async response => {
                         Utils.log(`response, ${response}`)
                         if (!response.ok) {
-                            // zipMap[id].zip.removeFile(file.name)
+                            zipMap[id].zip.removeFile(file.name)
                             Utils.error(`downloadUrl: ${file.downloadUrl}, response status: ${response.status}`)
                             return resolve()
                         } 
@@ -111,7 +111,7 @@ self.addEventListener('fetch', async (event) => {
                 })
             } catch (e) {
                 zipMap[id].zip.removeFile(file.name)
-                Utils.error(`Error while piping data into zip. Data removed. Error: ${e.toString()}`)
+                Utils.error(`Error while piping data into zip. File removed. Error: ${e.toString()}`)
                 continue
             }
 
