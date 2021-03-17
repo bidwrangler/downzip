@@ -85,11 +85,11 @@ self.addEventListener('fetch', async (event) => {
                 await new Promise((resolve, reject) => {
                     fetch(file.downloadUrl).then(async response => {
                         Utils.log(`response, ${response}`)
-                        // if (!response.ok) {
-                        //     zipMap[id].zip.removeFile(file.name)
-                        //     Utils.error(`downloadUrl: ${file.downloadUrl}, response status: ${response.status}`)
-                        //     return resolve()
-                        // } 
+                        if (!response.ok) {
+                            // zipMap[id].zip.removeFile(file.name)
+                            Utils.error(`downloadUrl: ${file.downloadUrl}, response status: ${response.status}`)
+                            return resolve()
+                        } 
                         const stream = response.body
                         const reader = stream.getReader()
                         let doneReading = false
