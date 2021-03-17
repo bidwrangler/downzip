@@ -140,7 +140,6 @@ class Zip {
         Utils.log(`Remove file: ${fileName}`)
         const fileIndex = this.fileRecord.findIndex(record => record.name === fileName)
         if (fileIndex !== -1) this.fileRecord.splice(fileIndex, 1)
-        console.log('this.fileRecord', this.fileRecord)
     }
 
     finish = () => {
