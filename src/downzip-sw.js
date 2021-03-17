@@ -84,7 +84,7 @@ self.addEventListener('fetch', async (event) => {
             try {
                 await new Promise((resolve, reject) => {
                     fetch(file.downloadUrl).then(async response => {
-                        Utils.log('response', response)
+                        Utils.log(`response, ${response}`)
                         if (!response.ok) {
                             zipMap[id].zip.removeFile(file.name)
                             Utils.error(`downloadUrl: ${file.downloadUrl}, response status: ${response.status}`)
@@ -98,7 +98,7 @@ self.addEventListener('fetch', async (event) => {
                             const {done, value} = chunk
 
                             if (done) {
-                                Utils.log('done-file', zipMap[id].zip)
+                                Utils.log(`done-file, ${zipMap[id].zip}`)
                                 // If this stream has finished, resolve and return
                                 resolve()
                                 doneReading = true
