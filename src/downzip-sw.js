@@ -110,7 +110,8 @@ self.addEventListener('fetch', async (event) => {
                     }).catch(err => reject(err))
                 })
             } catch (e) {
-                Utils.error(`Error while piping data into zip: ${e.toString()}`)
+                zipMap[id].zip.removeFile(file.name)
+                Utils.error(`Error while piping data into zip. Data removed. Error: ${e.toString()}`)
             }
 
             // End file
